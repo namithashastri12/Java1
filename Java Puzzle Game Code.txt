@@ -1,0 +1,64 @@
+//Java Puzzle Game Code
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class PuzzleGame {
+    private String[] countries = {"INDIA", "ISRAEL", "AMERICA"};
+    private Map<String, String> grid = new HashMap<>();
+    private int correctGuesses = 0;
+    private int totalGuesses = 0;
+    private Scanner scanner = new Scanner(System.in);
+
+    public PuzzleGame() {
+        placeCountries();
+    }
+
+    private void placeCountries() {
+        grid.put("A3", "I"); grid.put("A4", "N"); grid.put("A5", "D");
+        grid.put("B2", "I"); grid.put("C2", "S"); grid.put("D2", "R"); grid.put("E2", "A");
+        grid.put("B4", "A"); grid.put("B5", "M"); grid.put("B6", "E");
+        // Add other placements as needed
+    }
+
+    public void startPlaying() {
+        while (correctGuesses < countries.length) {
+            String guess = getUserInput("Enter your guess (e.g., A3): ");
+            String result = checkGuess(guess);
+            totalGuesses++;
+            System.out.println(result);
+        }
+        finishGame();
+    }
+
+    private String checkGuess(String guess) {
+        if (grid.containsKey(guess)) {
+            String letter = grid.remove(guess);
+            if (isWordCompleted(letter)) {
+                correctGuesses++;
+                return "Word Completed";
+            }
+            return "Hit";
+        }
+        return "Miss";
+    }
+
+    private boolean isWordCompleted(String letter) {
+        // Logic to check if the word is completed
+        return correctGuesses == countries.length;
+    }
+
+    private void finishGame() {
+        System.out.println("Game Over! Total guesses: " + totalGuesses);
+    }
+
+    private String getUserInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().toUpperCase();
+    }
+
+    public static void main(String[] args) {
+        PuzzleGame game = new PuzzleGame();
+        game.startPlaying();
+    }
+}
